@@ -1,0 +1,36 @@
+{
+  "name": "prometheus-concept-server",
+  "version": "1.0.0",
+  "description": "Server for Prometheus Concept game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "npx prettier --check .",
+    "lint:fix": "npx prettier --write ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "moment": "^2.29.3",
+    "socket.io": "^4.5.0"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
+    "prettier": "2.6.2"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sjwarner/prometheus-concept-server.git"
+  },
+  "author": "Sam Warner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sjwarner/prometheus-concept-server/issues"
+  },
+  "homepage": "https://github.com/sjwarner/prometheus-concept-server#readme"
+}
