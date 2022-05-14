@@ -1,5 +1,5 @@
-import cors from "cors";
 import express from "express";
+import cors from "cors";
 
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -30,11 +30,10 @@ app.get("/createNamespace", (req, res) => {
   res.json({ namespace: newNamespace });
 });
 
-// app.get("/exists/:namespace", function (req, res) {
-//   //returns bool
-//   const namespace = req.params.namespace;
-//   res.json({ exists: namespace in namespaces });
-// });
+app.get("/exists/:namespace", (req, res) => {
+  const namespace = req.params.namespace;
+  res.json({ exists: namespace in namespaces });
+});
 
 // game namespace: oneRoom
 const openSocket = (gameSocket, namespace) => {
@@ -115,31 +114,31 @@ const openSocket = (gameSocket, namespace) => {
     //   startGame(players, gameSocket, namespace);
     // });
 
-    // socket.on("disconnect", () => {
-    //   console.log("disconnected: " + socket.id);
-    //   players.map((x, index) => {
-    //     if (x.socket_id === socket.id) {
-    //       gameSocket.emit(
-    //         "g-addLog",
-    //         `${JSON.stringify(players[index].player)} has disconnected`
-    //       );
-    //       gameSocket.emit("g-addLog", "Please recreate the game.");
-    //       gameSocket.emit("g-addLog", "Sorry for the inconvenience (シ_ _)シ");
-    //       players[index].player = "";
-    //       if (socket.id === partyLeader) {
-    //         console.log("Leader has disconnected");
-    //         gameSocket.emit("leaderDisconnect", "leader_disconnected");
-    //         socket.removeAllListeners();
-    //         delete io.nsps[namespace];
-    //         delete namespaces[namespace.substring(1)];
-    //         players = [];
-    //         partyMembers = [];
-    //       }
-    //     }
-    //   });
-    //   console.log(Object.keys(gameSocket["sockets"]).length);
-    //   updatePartyList();
-    // });
+    socket.on("disconnect", () => {
+      console.log("disconnected: " + socket.id);
+      players.map((player, index) => {
+        if (player.socket_id === socket.id) {
+          gameSocket.emit(
+            "g-addLog",
+            `${JSON.stringify(players[index].player)} has disconnected`
+          );
+          gameSocket.emit("g-addLog", "Please recreate the game.");
+          gameSocket.emit("g-addLog", "Sorry for the inconvenience (シ_ _)シ");
+          players[index].player = "";
+          if (socket.id === partyLeader) {
+            console.log("Leader has disconnected");
+            gameSocket.emit("leaderDisconnect", "leader_disconnected");
+            socket.removeAllListeners();
+            delete io.nsps[namespace];
+            delete namespaces[namespace.substring(1)];
+            players = [];
+            partyMembers = [];
+          }
+        }
+      });
+      console.log(Object.keys(gameSocket["sockets"]).length);
+      updatePartyList();
+    });
   });
 
   // let checkEmptyInterval = setInterval(() => {
