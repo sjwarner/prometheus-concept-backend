@@ -100,13 +100,14 @@ const openSocket = (gameSocket, namespace) => {
           .emit("joinFailed", "name_taken");
       }
     });
-    // socket.on("setReady", (isReady) => {
-    //   // when client is ready, they will update this
-    //   console.log(`${players[index].player} is ready`);
-    //   players[index].isReady = isReady;
-    //   updatePartyList();
-    //   gameSocket.to(players[index].socket_id).emit("readyConfirm");
-    // });
+
+    socket.on("setReady", (isReady) => {
+      // When player pressed ready up, this event is emitted
+      console.log(`${players[index].player} is ready`);
+      players[index].isReady = isReady;
+      updatePartyList();
+      gameSocket.to(players[index].socket_id).emit("readyConfirm");
+    });
 
     // socket.on("startGameSignal", (players) => {
     //   started = true;
