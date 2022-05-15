@@ -154,11 +154,11 @@ const openSocket = (gameSocket, namespace) => {
   //   }
   // }, 10000);
 };
-//
-// startGame = (players, gameSocket, namespace) => {
-//   namespaces[namespace.substring(1)] = new CoupGame(players, gameSocket);
-//   namespaces[namespace.substring(1)].start();
-// };
+
+const startGame = (players, gameSocket, namespace) => {
+  namespaces[namespace.substring(1)] = new PrometheusConceptGame(players, gameSocket);
+  namespaces[namespace.substring(1)].start();
+};
 
 server.listen(process.env.PORT || PORT, function () {
   console.log(`listening on ${process.env.PORT || PORT}`);
