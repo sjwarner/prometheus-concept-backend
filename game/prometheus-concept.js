@@ -1,10 +1,10 @@
-const { exportPlayers } = require("../utilities/utilities.js");
+const { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } = require("../utilities/utilities.js");
 
 class PrometheusConceptGame {
   constructor(players, gameSocket) {
-    this.nameSocketMap = gameUtils.buildNameSocketMap(players);
-    this.nameIndexMap = gameUtils.buildNameIndexMap(players);
-    this.players = gameUtils.buildPlayers(players);
+    this.nameSocketMap = buildNameSocketMap(players);
+    this.nameIndexMap = buildNameIndexMap(players);
+    this.players = buildPlayers(players);
     this.gameSocket = gameSocket;
     this.currentPlayer = 0;
     // this.deck = gameUtils.buildDeck();
@@ -18,7 +18,8 @@ class PrometheusConceptGame {
 
   resetGame = (startingPlayer = 0) => {
     this.currentPlayer = startingPlayer;
-    this.aliveCount = this.players.length;
+
+    // this.aliveCount = this.players.length;
 
     // this.isChallengeBlockOpen = false;
     // this.isRevealOpen = false;
