@@ -7,7 +7,3 @@ export const generateNamespace = (length = 6) => {
   }
   return result;
 }
-
-// module.exports = {
-//   generateNamespace: generateNamespace,
-// };
