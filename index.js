@@ -5,6 +5,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 
 import { generateNamespace } from "./utilities/utilities.js";
+import PrometheusConceptGame from "./game/prometheus-concept.js";
 
 // Server/express setup
 const app = express();
@@ -109,11 +110,11 @@ const openSocket = (gameSocket, namespace) => {
       gameSocket.to(players[index].socket_id).emit("readyConfirm");
     });
 
-    // socket.on("startGameSignal", (players) => {
-    //   started = true;
-    //   gameSocket.emit("startGame");
-    //   startGame(players, gameSocket, namespace);
-    // });
+    socket.on("startGameSignal", (players) => {
+      started = true;
+      gameSocket.emit("startGame");
+      startGame(players, gameSocket, namespace);
+    });
 
     socket.on("disconnect", () => {
       console.log("disconnected: " + socket.id);
