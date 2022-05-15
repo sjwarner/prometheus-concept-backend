@@ -1,6 +1,6 @@
-const { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } = require("../utilities/utilities.js");
+import { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } from "../utilities/utilities.js";
 
-class PrometheusConceptGame {
+export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
     this.nameSocketMap = buildNameSocketMap(players);
     this.nameIndexMap = buildNameIndexMap(players);
@@ -243,5 +243,3 @@ class PrometheusConceptGame {
     this.playTurn();
   }
 }
-
-module.exports = PrometheusConceptGame;
