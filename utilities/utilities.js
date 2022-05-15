@@ -7,3 +7,11 @@ export const generateNamespace = (length = 6) => {
   }
   return result;
 }
+
+export const exportPlayers = (players) => {
+  players.forEach((player) => {
+    delete player.socketID;
+  });
+
+  return players;
+};
