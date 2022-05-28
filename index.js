@@ -43,17 +43,13 @@ const openSocket = (gameSocket, namespace) => {
   let started = false;
 
   gameSocket.on("connection", (socket) => {
-    console.log("id: " + socket.id);
-
     players.push({
       player: "",
       socket_id: `${socket.id}`,
       isReady: false,
     });
-    console.log(`player ${players.length} has connected`);
 
     socket.join(socket.id);
-    console.log("socket joined " + socket.id);
     const index = players.length - 1;
 
     const updatePartyList = () => {
@@ -62,13 +58,11 @@ const openSocket = (gameSocket, namespace) => {
           return { name: x.player, socketID: x.socket_id, isReady: x.isReady };
         })
         .filter((x) => x.name !== "");
-      console.log(partyMembers);
       gameSocket.emit("partyUpdate", partyMembers);
     };
 
     socket.on("setName", (name) => {
       // when client joins, it will immediately set its name
-      console.log(started);
       if (started) {
         gameSocket
           .to(players[index].socket_id)
@@ -85,10 +79,8 @@ const openSocket = (gameSocket, namespace) => {
             partyLeader = players[index].socket_id;
             players[index].isReady = true;
             gameSocket.to(players[index].socket_id).emit("leader");
-            console.log("PARTY LEADER IS: " + partyLeader);
           }
           players[index].player = name;
-          console.log(players[index]);
           updatePartyList();
           gameSocket
             .to(players[index].socket_id)
@@ -103,7 +95,6 @@ const openSocket = (gameSocket, namespace) => {
 
     socket.on("setReady", (isReady) => {
       // When player pressed ready up, this event is emitted
-      console.log(`${players[index].player} is ready`);
       players[index].isReady = isReady;
       updatePartyList();
       gameSocket.to(players[index].socket_id).emit("readyConfirm");
@@ -116,7 +107,6 @@ const openSocket = (gameSocket, namespace) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("disconnected: " + socket.id);
       players.map((player, index) => {
         if (player.socket_id === socket.id) {
           gameSocket.emit(
