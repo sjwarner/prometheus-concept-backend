@@ -50,6 +50,14 @@ export default class PrometheusConceptGame {
           playerSocket.emit("updateGameState", gameState);
           playerSocket.emit("updatePlayerWon", winningPlayer);
         });
+      });
+
+      socket.on("requestRematch", (username) => {
+        this.players[this.currentPlayer].wantsRematch = true;
+
+        // If everyone wants a rematch, reset the game
+        // Else, send messages to other player telling them about rematch request
+        // if ()
       })
     });
   }

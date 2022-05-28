@@ -19,6 +19,7 @@ export const buildNameIndexMap = (players) => {
 export const buildPlayers = (players) => {
   players.forEach((player) => {
     delete player.isReady;
+    delete player.wantsRematch;
   });
 
   return players;

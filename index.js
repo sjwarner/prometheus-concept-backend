@@ -47,6 +47,7 @@ const openSocket = (gameSocket, namespace) => {
       player: "",
       socket_id: `${socket.id}`,
       isReady: false,
+      wantsRematch: false,
     });
 
     socket.join(socket.id);
