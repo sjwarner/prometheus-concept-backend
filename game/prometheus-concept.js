@@ -56,8 +56,12 @@ export default class PrometheusConceptGame {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
         console.log("next player is ", nextPlayer)
 
-        socket.emit("updateGameState", gameState)
-        socket.emit("updatePlayerTurn", nextPlayer)
+        this.players.map(player => {
+          const playerSocket = this.gameSocket.sockets.get(player.socketID);
+
+          playerSocket.emit("updateGameState", gameState)
+          playerSocket.emit("updatePlayerTurn", nextPlayer)
+        });
 
         console.log("emitted new events")
       })
