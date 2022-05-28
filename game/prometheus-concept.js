@@ -1,5 +1,4 @@
 import { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } from "../utilities/utilities.js";
-import Players from "../utilities/Players.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
