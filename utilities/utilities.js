@@ -8,14 +8,6 @@ export const generateNamespace = (length = 6) => {
   return result;
 };
 
-export const buildNameIndexMap = (players) => {
-  let map = {};
-  players.map((player, index) => {
-    map[player.name] = index;
-  });
-  return map;
-};
-
 export const buildPlayers = (players) => {
   players.forEach((player) => {
     delete player.isReady;

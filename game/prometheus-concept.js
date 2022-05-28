@@ -1,11 +1,9 @@
 import {
-  buildNameIndexMap,
   buildPlayers,
 } from "../utilities/utilities.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
-    this.nameIndexMap = buildNameIndexMap(players);
     this.players = buildPlayers(players);
     this.gameSocket = gameSocket;
     this.currentPlayer = 0;
