@@ -27,7 +27,6 @@ app.get("/createNamespace", (req, res) => {
   const newSocket = io.of(`/${newNamespace}`);
   openSocket(newSocket, `/${newNamespace}`);
   namespaces[newNamespace] = null;
-  console.log(newNamespace + " CREATED");
   res.json({ namespace: newNamespace });
 });
 
@@ -128,7 +127,6 @@ const openSocket = (gameSocket, namespace) => {
           gameSocket.emit("g-addLog", "Sorry for the inconvenience (シ_ _)シ");
           players[index].player = "";
           if (socket.id === partyLeader) {
-            console.log("Leader has disconnected");
             gameSocket.emit("leaderDisconnect", "leader_disconnected");
             socket.removeAllListeners();
             delete io.nsps[namespace];
@@ -138,7 +136,6 @@ const openSocket = (gameSocket, namespace) => {
           }
         }
       });
-      console.log(Object.keys(gameSocket["sockets"]).length);
       updatePartyList();
     });
   });
