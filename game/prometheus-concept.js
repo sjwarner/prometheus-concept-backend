@@ -28,19 +28,6 @@ export default class PrometheusConceptGame {
         }
       });
 
-      socket.on("playerSetSphere", (playerNumber, gameState) => {
-        const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
-
-        this.players.map((player) => {
-          const playerSocket = this.gameSocket.sockets.get(player.socketID);
-
-          playerSocket.emit("updateGameState", gameState);
-          playerSocket.emit("updatePlayerTurn", nextPlayer);
-        });
-
-        this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
-      });
-
       socket.on("playerMovedPiece", gameState => {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
 
