@@ -51,7 +51,8 @@ export default class PrometheusConceptGame {
       });
 
       socket.on("requestRematch", (username) => {
-        this.players[this.currentPlayer].wantsRematch = true;
+        const playerIndex = this.players.findIndex(player => player.name === username);
+        this.players[playerIndex].wantsRematch = true;
 
         // If everyone wants a rematch, reset the game
         // Else, send messages to other player telling them about rematch request
