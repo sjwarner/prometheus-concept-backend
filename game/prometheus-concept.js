@@ -53,7 +53,7 @@ export default class PrometheusConceptGame {
         console.log("player sphere set for ", playerNumber)
         console.log("game state is ", gameState)
 
-        const nextPlayer = playerNumber === Players.PLAYER_ONE ? Players.PLAYER_TWO : Players.PLAYER_ONE;
+        const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
         console.log("next player is ", nextPlayer)
 
         socket.emit("updateGameState", gameState)
