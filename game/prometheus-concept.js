@@ -1,4 +1,9 @@
-import { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } from "../utilities/utilities.js";
+import {
+  buildNameSocketMap,
+  buildNameIndexMap,
+  buildPlayers,
+  exportPlayers,
+} from "../utilities/utilities.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
@@ -33,10 +38,10 @@ export default class PrometheusConceptGame {
     //   this.players[i].influences = [this.deck.pop(), this.deck.pop()];
     //   this.players[i].isDead = false;
     // }
-  }
+  };
 
   listen() {
-    this.players.map(player => {
+    this.players.map((player) => {
       const socket = this.gameSocket.sockets.get(player.socketID);
       let bind = this;
       socket.on("g-playAgain", () => {
@@ -49,22 +54,22 @@ export default class PrometheusConceptGame {
       });
 
       socket.on("playerSetSphere", (playerNumber, gameState) => {
-        console.log("player sphere set for ", playerNumber)
-        console.log("game state is ", gameState)
+        console.log("player sphere set for ", playerNumber);
+        console.log("game state is ", gameState);
 
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
-        console.log("next player is ", nextPlayer)
+        console.log("next player is ", nextPlayer);
 
-        this.players.map(player => {
+        this.players.map((player) => {
           const playerSocket = this.gameSocket.sockets.get(player.socketID);
 
-          playerSocket.emit("updateGameState", gameState)
-          playerSocket.emit("updatePlayerTurn", nextPlayer)
+          playerSocket.emit("updateGameState", gameState);
+          playerSocket.emit("updatePlayerTurn", nextPlayer);
         });
 
-        this.currentPlayer = this.currentPlayer === 0 ? 1 : 0
-        console.log("emitted new events")
-      })
+        this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
+        console.log("emitted new events");
+      });
 
       // Might be best analogue to a move
       /**
@@ -100,7 +105,10 @@ export default class PrometheusConceptGame {
 
   updatePlayers() {
     // when players die
-    this.gameSocket.emit("g-updatePlayers", exportPlayers(JSON.parse(JSON.stringify(this.players))));
+    this.gameSocket.emit(
+      "g-updatePlayers",
+      exportPlayers(JSON.parse(JSON.stringify(this.players)))
+    );
   }
 
   //
@@ -247,10 +255,15 @@ export default class PrometheusConceptGame {
   //
 
   playTurn() {
-    this.gameSocket.emit("updatePlayerTurn", this.players[this.currentPlayer].name);
+    this.gameSocket.emit(
+      "updatePlayerTurn",
+      this.players[this.currentPlayer].name
+    );
     console.log(this.players[this.currentPlayer].socketID);
 
-    this.gameSocket.to(this.players[this.currentPlayer].socketID).emit("g-makeMove");
+    this.gameSocket
+      .to(this.players[this.currentPlayer].socketID)
+      .emit("g-makeMove");
   }
 
   start = () => {
@@ -259,5 +272,5 @@ export default class PrometheusConceptGame {
     this.updatePlayers();
     console.log("Game has started");
     this.playTurn();
-  }
+  };
 }

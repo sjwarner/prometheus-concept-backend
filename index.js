@@ -153,7 +153,10 @@ const openSocket = (gameSocket, namespace) => {
 };
 
 const startGame = (players, gameSocket, namespace) => {
-  namespaces[namespace.substring(1)] = new PrometheusConceptGame(players, gameSocket);
+  namespaces[namespace.substring(1)] = new PrometheusConceptGame(
+    players,
+    gameSocket
+  );
   namespaces[namespace.substring(1)].start();
 };
 

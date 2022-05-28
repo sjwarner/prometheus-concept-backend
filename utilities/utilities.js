@@ -6,7 +6,7 @@ export const generateNamespace = (length = 6) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
-}
+};
 
 export const buildNameSocketMap = (players) => {
   let map = {};
