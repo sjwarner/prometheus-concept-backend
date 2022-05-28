@@ -39,7 +39,7 @@ export default class PrometheusConceptGame {
         this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
       });
 
-      socket.on("playerWon", (gameState, username) => {
+      socket.on("playerWon", gameState => {
         const winningPlayer = this.players[this.currentPlayer].name;
 
         this.players.map((player) => {
