@@ -129,7 +129,7 @@ const openSocket = (gameSocket, namespace) => {
           if (socket.id === partyLeader) {
             gameSocket.emit("leaderDisconnect", "leader_disconnected");
             socket.removeAllListeners();
-            delete io.nsps[namespace];
+            delete io._nsps[namespace];
             delete namespaces[namespace.substring(1)];
             players = [];
             partyMembers = [];
