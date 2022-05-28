@@ -1,4 +1,5 @@
 import { buildNameSocketMap, buildNameIndexMap, buildPlayers, exportPlayers } from "../utilities/utilities.js";
+import Players from "../utilities/Players.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
@@ -52,7 +53,7 @@ export default class PrometheusConceptGame {
         console.log("player sphere set for ", playerNumber)
         console.log("game state is ", gameState)
 
-        const nextPlayer = playerNumber === "player_one" ? "player_two" : "player_one";
+        const nextPlayer = playerNumber === Players.PLAYER_ONE ? Players.PLAYER_TWO : Players.PLAYER_ONE;
         console.log("next player is ", nextPlayer)
 
         socket.emit("updateGameState", gameState)
