@@ -62,6 +62,7 @@ export default class PrometheusConceptGame {
           playerSocket.emit("updatePlayerTurn", nextPlayer)
         });
 
+        this.currentPlayer = this.currentPlayer === 0 ? 1 : 0
         console.log("emitted new events")
       })
 
