@@ -39,6 +39,17 @@ export default class PrometheusConceptGame {
         });
 
         this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
+      });
+
+      socket.on("playerWon", (gameState, username) => {
+        const winningPlayer = this.players[this.currentPlayer].name;
+
+        this.players.map((player) => {
+          const playerSocket = this.gameSocket.sockets.get(player.socketID);
+
+          playerSocket.emit("updateGameState", gameState);
+          playerSocket.emit("updatePlayerWon", winningPlayer);
+        });
       })
     });
   }
