@@ -36,8 +36,8 @@ export default class PrometheusConceptGame {
   }
 
   listen() {
-    this.players.map((player) => {
-      const socket = this.gameSocket.sockets[player.socketID];
+    this.players.map(player => {
+      const socket = this.gameSocket.sockets.get(player.socketID);
       let bind = this;
       socket.on("g-playAgain", () => {
         if (bind.isPlayAgainOpen) {
