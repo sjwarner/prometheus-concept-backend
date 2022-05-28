@@ -1,6 +1,4 @@
-import {
-  buildPlayers,
-} from "../utilities/utilities.js";
+import { buildPlayers } from "../utilities/utilities.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
@@ -26,7 +24,7 @@ export default class PrometheusConceptGame {
         }
       });
 
-      socket.on("playerMovedPiece", gameState => {
+      socket.on("playerMovedPiece", (gameState) => {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
 
         this.players.map((player) => {
@@ -39,7 +37,7 @@ export default class PrometheusConceptGame {
         this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
       });
 
-      socket.on("playerWon", gameState => {
+      socket.on("playerWon", (gameState) => {
         const winningPlayer = this.players[this.currentPlayer].name;
 
         this.players.map((player) => {
@@ -51,25 +49,29 @@ export default class PrometheusConceptGame {
       });
 
       socket.on("requestRematch", (username) => {
-        const playerIndex = this.players.findIndex(player => player.name === username);
+        const playerIndex = this.players.findIndex(
+          (player) => player.name === username
+        );
         this.players[playerIndex].wantsRematch = true;
 
         // If everyone wants a rematch, reset the game
         // Else, send messages to other player telling them about rematch request
-        if (this.players.every(player => player.wantsRematch === true)) {
-          console.log('Everyone did it, so resetGame');
+        if (this.players.every((player) => player.wantsRematch === true)) {
+          console.log("Everyone did it, so resetGame");
           this.players.map((player) => {
             const playerSocket = this.gameSocket.sockets.get(player.socketID);
             playerSocket.emit("resetGame");
           });
         } else {
-          console.log('Just one person, so opponentRequested');
-          this.players.filter(player => !player.wantsRematch).map(player => {
-            const playerSocket = this.gameSocket.sockets.get(player.socketID);
-            playerSocket.emit("opponentRequestedRematch")
-          });
+          console.log("Just one person, so opponentRequested");
+          this.players
+            .filter((player) => !player.wantsRematch)
+            .map((player) => {
+              const playerSocket = this.gameSocket.sockets.get(player.socketID);
+              playerSocket.emit("opponentRequestedRematch");
+            });
         }
-      })
+      });
     });
   }
 
