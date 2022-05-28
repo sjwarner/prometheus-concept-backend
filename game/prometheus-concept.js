@@ -48,6 +48,19 @@ export default class PrometheusConceptGame {
         }
       });
 
+      socket.on("playerSetSphere", (playerNumber, gameState) => {
+        console.log("player sphere set for ", playerNumber)
+        console.log("game state is ", gameState)
+
+        const nextPlayer = playerNumber === "player_one" ? "player_two" : "player_one";
+        console.log("next player is ", nextPlayer)
+
+        socket.emit("updateGameState", gameState)
+        socket.emit("updatePlayerTurn", nextPlayer)
+
+        console.log("emitted new events")
+      })
+
       // Might be best analogue to a move
       /**
        * @typedef {Object} res - Response object
@@ -229,10 +242,10 @@ export default class PrometheusConceptGame {
   //
 
   playTurn() {
-    this.gameSocket.emit("g-updateCurrentPlayer", this.players[this.currentPlayer].name);
+    this.gameSocket.emit("updatePlayerTurn", this.players[this.currentPlayer].name);
     console.log(this.players[this.currentPlayer].socketID);
 
-    this.gameSocket.to(this.players[this.currentPlayer].socketID).emit("g-chooseAction");
+    this.gameSocket.to(this.players[this.currentPlayer].socketID).emit("g-makeMove");
   }
 
   start = () => {
