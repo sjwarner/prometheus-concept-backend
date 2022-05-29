@@ -14,13 +14,6 @@ export default class PrometheusConceptGame {
   listen() {
     this.players.map((player) => {
       const socket = this.gameSocket.sockets.get(player.socketID);
-      let bind = this;
-      socket.on("g-playAgain", () => {
-        if (bind.isPlayAgainOpen) {
-          bind.isPlayAgainOpen = false;
-          this.playTurn();
-        }
-      });
 
       socket.on("playerMovedPiece", (gameState) => {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
@@ -81,11 +74,6 @@ export default class PrometheusConceptGame {
       "updatePlayerTurn",
       this.players[this.currentPlayer].name
     );
-    console.log(this.players[this.currentPlayer].socketID);
-
-    this.gameSocket
-      .to(this.players[this.currentPlayer].socketID)
-      .emit("g-makeMove");
   }
 
   start = () => {
