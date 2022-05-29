@@ -59,6 +59,9 @@ export default class PrometheusConceptGame {
         if (this.players.every((player) => player.wantsRematch === true)) {
           console.log("Everyone did it, so resetGame");
           this.players.map((player) => {
+            // As game has been reset, clear player's rematch flag
+            player.wantsRematch = false;
+
             const playerSocket = this.gameSocket.sockets.get(player.socketID);
             playerSocket.emit("resetGame");
           });
