@@ -17,11 +17,11 @@ export default class PrometheusConceptGame {
 
       socket.on("playerMovedPiece", (gameState) => {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
+        const nextPlayerSocket = this.gameSocket.sockets.get(this.players[this.currentPlayer === 0 ? 1 : 0].socketID);
+        nextPlayerSocket.emit("updateGameState", gameState);
 
         this.players.map((player) => {
           const playerSocket = this.gameSocket.sockets.get(player.socketID);
-
-          playerSocket.emit("updateGameState", gameState);
           playerSocket.emit("updatePlayerTurn", nextPlayer);
         });
 
@@ -30,11 +30,11 @@ export default class PrometheusConceptGame {
 
       socket.on("playerWon", (gameState) => {
         const winningPlayer = this.players[this.currentPlayer].name;
+        const losingPlayerSocket = this.gameSocket.sockets.get(this.players[this.currentPlayer === 0 ? 1 : 0].socketID);
+        losingPlayerSocket.emit("updateGameState", gameState);
 
         this.players.map((player) => {
           const playerSocket = this.gameSocket.sockets.get(player.socketID);
-
-          playerSocket.emit("updateGameState", gameState);
           playerSocket.emit("updatePlayerWon", winningPlayer);
         });
       });
