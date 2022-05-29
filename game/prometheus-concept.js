@@ -18,8 +18,6 @@ export default class PrometheusConceptGame {
       socket.on("g-playAgain", () => {
         if (bind.isPlayAgainOpen) {
           bind.isPlayAgainOpen = false;
-          this.resetGame(Math.floor(Math.random() * this.players.length));
-          this.updatePlayers();
           this.playTurn();
         }
       });
@@ -57,16 +55,16 @@ export default class PrometheusConceptGame {
         // If everyone wants a rematch, reset the game
         // Else, send messages to other player telling them about rematch request
         if (this.players.every((player) => player.wantsRematch === true)) {
-          console.log("Everyone did it, so resetGame");
+          this.resetGame(Math.floor(Math.random() * this.players.length));
+
           this.players.map((player) => {
             // As game has been reset, clear player's rematch flag
             player.wantsRematch = false;
 
             const playerSocket = this.gameSocket.sockets.get(player.socketID);
-            playerSocket.emit("resetGame");
+            playerSocket.emit("resetGame", this.currentPlayer);
           });
         } else {
-          console.log("Just one person, so opponentRequested");
           this.players
             .filter((player) => !player.wantsRematch)
             .map((player) => {
