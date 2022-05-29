@@ -115,6 +115,7 @@ const openSocket = (gameSocket, namespace) => {
           if (socket.id === partyLeader) {
             gameSocket.emit("leaderDisconnect", "leader_disconnected");
             socket.removeAllListeners();
+            console.log(namespace);
             delete io._nsps[namespace];
             delete namespaces[namespace.substring(1)];
             players = [];
@@ -128,6 +129,7 @@ const openSocket = (gameSocket, namespace) => {
 
   let checkEmptyInterval = setInterval(() => {
     if (Object.keys(gameSocket["sockets"]).length === 0) {
+      console.log(namespace);
       delete io._nsps[namespace];
       if (namespaces[namespace] != null) {
         delete namespaces[namespace.substring(1)];
