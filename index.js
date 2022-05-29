@@ -128,7 +128,7 @@ const openSocket = (gameSocket, namespace) => {
 
   let checkEmptyInterval = setInterval(() => {
     if (Object.keys(gameSocket["sockets"]).length === 0) {
-      delete io.nsps[namespace];
+      delete io._nsps[namespace];
       if (namespaces[namespace] != null) {
         delete namespaces[namespace.substring(1)];
       }
