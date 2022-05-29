@@ -110,12 +110,7 @@ const openSocket = (gameSocket, namespace) => {
     socket.on("disconnect", () => {
       players.map((player, index) => {
         if (player.socket_id === socket.id) {
-          gameSocket.emit(
-            "g-addLog",
-            `${JSON.stringify(players[index].player)} has disconnected`
-          );
-          gameSocket.emit("g-addLog", "Please recreate the game.");
-          gameSocket.emit("g-addLog", "Sorry for the inconvenience (シ_ _)シ");
+          gameSocket.emit("playerDisconnected", 'Opponent disconnected from game.');
           players[index].player = "";
           if (socket.id === partyLeader) {
             gameSocket.emit("leaderDisconnect", "leader_disconnected");
@@ -131,16 +126,16 @@ const openSocket = (gameSocket, namespace) => {
     });
   });
 
-  // let checkEmptyInterval = setInterval(() => {
-  //   if (Object.keys(gameSocket["sockets"]).length === 0) {
-  //     delete io.nsps[namespace];
-  //     if (namespaces[namespace] != null) {
-  //       delete namespaces[namespace.substring(1)];
-  //     }
-  //     clearInterval(checkEmptyInterval);
-  //     console.log(namespace + "deleted");
-  //   }
-  // }, 10000);
+  let checkEmptyInterval = setInterval(() => {
+    if (Object.keys(gameSocket["sockets"]).length === 0) {
+      delete io.nsps[namespace];
+      if (namespaces[namespace] != null) {
+        delete namespaces[namespace.substring(1)];
+      }
+      clearInterval(checkEmptyInterval);
+      console.log(namespace + "deleted");
+    }
+  }, 10000);
 };
 
 const startGame = (players, gameSocket, namespace) => {
