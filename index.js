@@ -101,6 +101,10 @@ const openSocket = (gameSocket, namespace) => {
       gameSocket.to(players[index].socket_id).emit("readyConfirm");
     });
 
+    socket.on("playerOrderUpdated", (newPlayerOrder) => {
+      gameSocket.emit("updateClientPlayerOrder", newPlayerOrder);
+    });
+
     socket.on("startGameSignal", (players) => {
       started = true;
       gameSocket.emit("startGame");
@@ -110,7 +114,10 @@ const openSocket = (gameSocket, namespace) => {
     socket.on("disconnect", () => {
       players.map((player, index) => {
         if (player.socket_id === socket.id) {
-          gameSocket.emit("playerDisconnected", 'Opponent disconnected from game.');
+          gameSocket.emit(
+            "playerDisconnected",
+            "Opponent disconnected from game."
+          );
           players[index].player = "";
           if (socket.id === partyLeader) {
             gameSocket.emit("leaderDisconnect", "leader_disconnected");
