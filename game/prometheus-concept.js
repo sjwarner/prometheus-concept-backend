@@ -17,7 +17,9 @@ export default class PrometheusConceptGame {
 
       socket.on("playerMovedPiece", (gameState) => {
         const nextPlayer = this.players[this.currentPlayer === 0 ? 1 : 0].name;
-        const nextPlayerSocket = this.gameSocket.sockets.get(this.players[this.currentPlayer === 0 ? 1 : 0].socketID);
+        const nextPlayerSocket = this.gameSocket.sockets.get(
+          this.players[this.currentPlayer === 0 ? 1 : 0].socketID
+        );
         nextPlayerSocket.emit("updateGameState", gameState);
 
         this.players.map((player) => {
@@ -30,13 +32,30 @@ export default class PrometheusConceptGame {
 
       socket.on("playerWon", (gameState) => {
         const winningPlayer = this.players[this.currentPlayer].name;
-        const losingPlayerSocket = this.gameSocket.sockets.get(this.players[this.currentPlayer === 0 ? 1 : 0].socketID);
+        const losingPlayerSocket = this.gameSocket.sockets.get(
+          this.players[this.currentPlayer === 0 ? 1 : 0].socketID
+        );
         losingPlayerSocket.emit("updateGameState", gameState);
 
         this.players.map((player) => {
           const playerSocket = this.gameSocket.sockets.get(player.socketID);
           playerSocket.emit("updatePlayerWon", winningPlayer);
         });
+      });
+
+      socket.on("playerResigned", (resigningPlayerSocketId) => {
+        console.log(resigningPlayerSocketId);
+
+        this.players.map((player) => console.log(player.socketID));
+
+        const winningPlayerSocketId = this.players.find(
+          (player) => player.socketID !== resigningPlayerSocketId
+        ).socketID;
+        const winningPlayerSocket = this.gameSocket.sockets.get(
+          winningPlayerSocketId
+        );
+
+        winningPlayerSocket.emit("opponentResigned");
       });
 
       socket.on("requestRematch", (username) => {
