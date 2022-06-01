@@ -44,10 +44,6 @@ export default class PrometheusConceptGame {
       });
 
       socket.on("playerResigned", (resigningPlayerSocketId) => {
-        console.log(resigningPlayerSocketId);
-
-        this.players.map((player) => console.log(player.socketID));
-
         const winningPlayerSocketId = this.players.find(
           (player) => player.socketID !== resigningPlayerSocketId
         ).socketID;
