@@ -43,6 +43,39 @@ export default class PrometheusConceptGame {
         });
       });
 
+      socket.on("playerOfferedDraw", (offeringPlayerSocketId) => {
+        const receivingPlayerSocketId = this.players.find(
+          (player) => player.socketID !== offeringPlayerSocketId
+        ).socketID;
+        const receivingPlayerSocket = this.gameSocket.sockets.get(
+          receivingPlayerSocketId
+        );
+
+        receivingPlayerSocket.emit("opponentOfferedDraw");
+      });
+
+      socket.on("playerAcceptedDraw", (acceptingPlayerSocketId) => {
+        const offeringPlayerSocketId = this.players.find(
+          (player) => player.socketID !== acceptingPlayerSocketId
+        ).socketID;
+        const offeringPlayerSocket = this.gameSocket.sockets.get(
+          offeringPlayerSocketId
+        );
+
+        offeringPlayerSocket.emit("opponentAcceptedDraw");
+      });
+
+      socket.on("playerDeclinedDraw", (decliningPlayerSocketId) => {
+        const offeringPlayerSocketId = this.players.find(
+          (player) => player.socketID !== decliningPlayerSocketId
+        ).socketID;
+        const offeringPlayerSocket = this.gameSocket.sockets.get(
+          offeringPlayerSocketId
+        );
+
+        offeringPlayerSocket.emit("opponentDeclinedDraw");
+      });
+
       socket.on("playerResigned", (resigningPlayerSocketId) => {
         const winningPlayerSocketId = this.players.find(
           (player) => player.socketID !== resigningPlayerSocketId
