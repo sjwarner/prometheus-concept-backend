@@ -54,6 +54,17 @@ export default class PrometheusConceptGame {
         receivingPlayerSocket.emit("opponentOfferedDraw");
       });
 
+      socket.on("playerWithdrewDrawOffer", (offeringPlayerSocketId) => {
+        const receivingPlayerSocketId = this.players.find(
+          (player) => player.socketID !== offeringPlayerSocketId
+        ).socketID;
+        const receivingPlayerSocket = this.gameSocket.sockets.get(
+          receivingPlayerSocketId
+        );
+
+        receivingPlayerSocket.emit("opponentWithdrewDrawOffer");
+      });
+
       socket.on("playerAcceptedDraw", (acceptingPlayerSocketId) => {
         const offeringPlayerSocketId = this.players.find(
           (player) => player.socketID !== acceptingPlayerSocketId
