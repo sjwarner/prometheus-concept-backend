@@ -4,8 +4,12 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
-import { generateNamespace } from "./utilities/utilities.js";
+import {
+  generateNamespace,
+  InitialRandomGameStateWhite,
+} from "./utilities/utilities.js";
 import PrometheusConceptGame from "./game/prometheus-concept.js";
+import GameModes from "./game/enums/GameModes.js";
 
 // Server/express setup
 const app = express();
@@ -105,9 +109,13 @@ const openSocket = (gameSocket, namespace) => {
       gameSocket.emit("updateClientPlayerOrder", newPlayerOrder);
     });
 
-    socket.on("startGameSignal", (players) => {
+    socket.on("startGameSignal", (players, gameMode) => {
       started = true;
-      gameSocket.emit("startGame");
+      if (gameMode === GameModes.ORIGINAL) {
+        gameSocket.emit("startGame");
+      } else {
+        gameSocket.emit("startRandomGame", InitialRandomGameStateWhite());
+      }
       startGame(players, gameSocket, namespace);
     });
 
