@@ -1,4 +1,8 @@
-import { buildPlayers } from "../utilities/utilities.js";
+import {
+  buildPlayers,
+  InitialRandomGameStateWhite,
+} from "../utilities/utilities.js";
+import GameModes from "./enums/GameModes.js";
 
 export default class PrometheusConceptGame {
   constructor(players, gameSocket) {
@@ -98,11 +102,14 @@ export default class PrometheusConceptGame {
         winningPlayerSocket.emit("opponentResigned");
       });
 
-      socket.on("requestRematch", (username) => {
+      socket.on("requestRematch", (username, gameMode) => {
         const playerIndex = this.players.findIndex(
           (player) => player.name === username
         );
         this.players[playerIndex].wantsRematch = true;
+
+        // Generate random state for random games - must be server side to ensure same layout for both players
+        const gameState = InitialRandomGameStateWhite();
 
         // If everyone wants a rematch, reset the game
         // Else, send messages to other player telling them about rematch request
@@ -114,7 +121,12 @@ export default class PrometheusConceptGame {
             player.wantsRematch = false;
 
             const playerSocket = this.gameSocket.sockets.get(player.socketID);
-            playerSocket.emit("resetGame", this.currentPlayer);
+
+            if (gameMode === GameModes.ORIGINAL) {
+              playerSocket.emit("resetGame", this.currentPlayer);
+            } else {
+              playerSocket.emit("resetGame", this.currentPlayer, gameState);
+            }
           });
         } else {
           this.players
